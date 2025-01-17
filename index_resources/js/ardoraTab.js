@@ -1,10 +1,27 @@
 //Creado con Ardora - www.webardora.net
 //bajo licencia Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)
 //para otros usos contacte con el autor
-var timeInterval; $(document).ready(function() {randomSort();timeInterval=setInterval("paintTab()",1000);
+var timeInterval; $(document).ready(function() {paintOk();randomSort();timeInterval=setInterval("paintTab()",1000);
 var canWidth=$("#ardoraAct").css("width").replace("px","");var canHeight=$("#ardoraAct").css("height").replace("px","");$("#ardoraActCanvas").attr({"width": canWidth,"height": canHeight})
 $("#ardoraActCanvasAnim").attr({"width": canWidth,"height": canHeight});
+$("#buttonOk").mouseenter(function(){$(this).css("-webkit-box-shadow"," 0px 0px 0px rgba(50, 50, 50, 0.5)");
+$(this).css("box-shadow" , "0px 0px 0px rgba(50, 50, 50, 0.75)");removeOk();
+}).mouseleave(function() { $(this).css("-webkit-box-shadow"," 4px 4px 4px rgba(50, 50, 50, 0.5)"); $(this).css("-moz-box-shadow", "4px 4px 4px rgba(50, 50, 50, 0.5)");$(this).css("box-shadow" , "4px 4px 4px rgba(50,50,50,0.5)"); paintOk();}).mousedown(function(){if (typeGame!=99){isCorrect();}})
 initAct();})
+function paintOk(){ var canvas = document.getElementById("buttonOkCanvas"); var contexto = canvas.getContext("2d");
+contexto.fillStyle =colorButton;contexto.fillRect(1,1,canvas.width-2,canvas.height-2);
+var x=canvas.width-2; var grd = contexto.createRadialGradient(x/2, x/2,1, x/2, x/2, 30);grd.addColorStop(0,colorBack);
+grd.addColorStop(1,colorSele);contexto.fillStyle = grd; contexto.fillRect(10, 10,canvas.width-20,canvas.height-20);
+contexto.lineWidth = 1; contexto.strokeStyle =colorText;
+contexto.fillStyle =colorText;contexto.beginPath();contexto.strokeRect(10, 10,canvas.width-20,canvas.height-20);
+contexto.font="bold 36px Verdana"; contexto.textAlign = "left"; contexto.fillText("?",25,48); contexto.stroke();}
+function removeOk(){ var canvas = document.getElementById("buttonOkCanvas"); var contexto = canvas.getContext("2d");
+contexto.fillStyle =colorSele;contexto.fillRect(1,1,canvas.width-2,canvas.height-2);
+var x=canvas.width-2; var grd = contexto.createRadialGradient(x/2, x/2,1, x/2, x/2, 30);grd.addColorStop(0,colorBack);
+grd.addColorStop(1,colorButton);contexto.fillStyle = grd; contexto.fillRect(10, 10,canvas.width-20,canvas.height-20);
+contexto.lineWidth = 1; contexto.strokeStyle =colorText;
+contexto.fillStyle =colorText;contexto.beginPath();contexto.strokeRect(10, 10,canvas.width-20,canvas.height-20);
+contexto.font="bold 36px Verdana"; contexto.textAlign = "left"; contexto.fillText("?",25,48); contexto.stroke();}
 function paintTab(){if (document.getElementById("ardoraTabCanvas")!=null){var canvas = document.getElementById("ardoraTabCanvas");var contexto = canvas.getContext("2d");contexto.fillStyle =$(canvas).css("background-color");
 contexto.clearRect(0,0,canvas.width,canvas.height); contexto.lineWidth = 1; contexto.strokeStyle = "black";contexto.fillStyle = "black";if (!isShowMessage){timeAct-=1;}contexto.font="8px Verdana";
 var profundidade=1; var x = canvas.width / 2; var y = canvas.width / 2+19;
@@ -18,8 +35,22 @@ contexto.lineWidth = 5; if (timeAct>timeIni/4){contexto.strokeStyle =colorSele;}
 contexto.stroke();if (timeAct<timeIni){contexto.beginPath();contexto.arc(x,y,radius,startAngle,endAngle,false);
 if(timeAct>timeIni/4){contexto.strokeStyle =colorButton;}else{contexto.strokeStyle =colorSele;}
 contexto.lineWidth = 2;contexto.stroke();}contexto.beginPath();contexto.fillStyle =colorText;contexto.textAlign = "center";
-contexto.fillText(timeAct,x,y+4);contexto.stroke();contexto.lineWidth = 1;profundidade=canvas.width+profundidade;if (timeAct==0){goTime();}}
-}}
+contexto.fillText(timeAct,x,y+4);contexto.stroke();contexto.lineWidth = 1;profundidade=canvas.width+profundidade;if (timeAct==0){goTime();}}if (tiSuccesses){contexto.beginPath();
+contexto.fillStyle =colorButton;contexto.fillRect(1,profundidade,68,45);contexto.fillStyle =colorBack;contexto.fillRect(3,profundidade+2,64,18);
+contexto.strokeStyle =colorSele;contexto.strokeRect(3,profundidade+2,64,18);contexto.stroke();contexto.beginPath();contexto.fillStyle =colorText;
+contexto.font="8px Verdana";contexto.textAlign = "left";contexto.fillText("ACIERTOS:",8,profundidade+14);contexto.lineWidth = 5;contexto.stroke();
+contexto.beginPath();contexto.fillStyle =colorBack;contexto.font="bold 14px Verdana";contexto.textAlign = "center";
+contexto.fillText(successes+"/"+successesMax,x,profundidade+40);contexto.lineWidth = 1;contexto.stroke();profundidade=profundidade+8+40;}if (tiAttempts){contexto.beginPath();
+contexto.fillStyle =colorButton;contexto.fillRect(1,profundidade,68,45);contexto.fillStyle =colorBack;contexto.fillRect(3,profundidade+2,64,18);
+contexto.strokeStyle =colorSele;contexto.strokeRect(3,profundidade+2,64,18);contexto.stroke();contexto.beginPath();
+contexto.fillStyle =colorText;contexto.font="8px Verdana";contexto.textAlign = "left";
+contexto.fillText("INTENTOS:",8,profundidade+14);contexto.lineWidth = 5;contexto.stroke();contexto.beginPath();contexto.font="bold 14px Verdana";
+if (attemptsMax-attempts>1){contexto.fillStyle =colorBack;}else{contexto.fillStyle ="red";}contexto.textAlign = "center";contexto.fillText(attempts+"/"+attemptsMax,x,profundidade+40);
+contexto.lineWidth = 1;contexto.stroke();profundidade=profundidade+8+40;}if (tiScore){contexto.beginPath();contexto.fillStyle =colorButton;
+contexto.fillRect(1,profundidade,68,45);contexto.fillStyle =colorBack;contexto.fillRect(3,profundidade+2,64,18);contexto.strokeStyle =colorSele;
+contexto.strokeRect(3,profundidade+2,64,18);contexto.stroke();contexto.beginPath();contexto.fillStyle =colorText;contexto.font="8px Verdana";contexto.textAlign = "left";
+contexto.fillText("PUNTOS:",8,profundidade+14);contexto.lineWidth = 5;contexto.stroke();contexto.beginPath();contexto.fillStyle =colorBack;
+contexto.font="bold 14px Verdana";contexto.textAlign = "center";contexto.strokeStyle =colorText;contexto.fillText(score+"/"+scoreMax,x,profundidade+40);contexto.stroke();}}}
  function printJustify(context, text, x, y, lineHeight, fitWidth) { fitWidth = fitWidth || 0; lineHeight = lineHeight || 20; var outLines=[]; var currentLine = 0;
 var lines = text.split(/\r\n|\r|\n/); for (var line = 0; line < lines.length; line++) { if (fitWidth <= 0) { context.fillText(lines[line], x, y + (lineHeight * currentLine));
 } else { var words = lines[line].split(" "); var idx = 1; while (words.length > 0 && idx <= words.length) { var str = words.slice(0, idx).join(" ");
@@ -38,10 +69,8 @@ while (!((dx < 0 ? x <= toX : x >= toX) && (dy < 0 ? y <= toY : y >= toY))) {var
 if (draw) {context.lineTo(x, y);} else { context.moveTo(x, y);} draw = !draw;} context.closePath();context.stroke();};
 function paintBubble(ctx, x, y, w, h, xPointer, radius) {if (xPointer == 0) {var xP = x + w / 2;} else {var xP = xPointer;}ctx.fillStyle = colorSele;ctx.globalAlpha = 0.7;ctx.beginPath();ctx.strokeStyle = colorSele;
 ctx.lineWidth = "2";roundedRect(ctx, x, y, w, h - 10, 10, colorSele);ctx.moveTo(xP, y + h - 10);ctx.lineTo(xP + 10, y + h - 10);ctx.lineTo(xP + 5, y + h);ctx.lineTo(xP, y + h - 10);ctx.shadowColor = "#999";ctx.shadowBlur = 5;ctx.shadowOffsetX = 3;ctx.shadowOffsetY = 3;ctx.fill();ctx.stroke();}
-function showMessage(typeMessage){ var oldTypeGame=typeGame;typeGame=99;isShowMessage=true;
-if (typeMessage=="Ok"){ var textMessage=messageOk; var urlMessage=urlOk; var goURLTarget= goURLOk; var borderColor=borderOk;$("#ardoraActCanvas").unbind();}
-if (typeMessage == "scoMessage") {var textMessage = scoMessage; var urlMessage = "";var goURLTarget = "";var borderColor = borderAttempts;
-}
+function showMessage(typeMessage){ var oldTypeGame=typeGame;typeGame=99;isShowMessage=true; if (typeMessage=="Ok"){ var textMessage=messageOk; var urlMessage=urlOk; var goURLTarget= goURLOk; var borderColor=borderOk;}
+if (typeMessage == "scoMessage") {var textMessage = scoMessage; var urlMessage = "";var goURLTarget = "";var borderColor = borderAttempts;}
 if (typeMessage=="Time"){var textMessage=messageTime;var urlMessage=urlTime; var goURLTarget= goURLTime; var borderColor=borderTime;}
 if (typeMessage=="Error"){var textMessage=messageError;var urlMessage=urlError; var goURLTarget= goURLError; var borderColor=borderError;}
 if (typeMessage=="Attempts"){ if (tiTime || tiAttempts || tiScore || tiSuccesses ){clearInterval(timeInterval);}var textMessage=messageAttempts;var urlMessage=urlAttempts; var goURLTarget= goURLAttempts; var borderColor=borderAttempts;}
@@ -100,5 +129,19 @@ $("body").css("background-color",colorBack);
 $("#ardoraMain").css("color",colorText);
 if ($(".txtCell_input").length !=0) { $(".txtCell_input").css("background-color",colorBack); $(".txtCell_input").css("color",colorText);}
 if ($(".txtCell_txt").length !=0) { $(".txtCell_txt").css("background-color",colorBack)}
+if ($(".imaCell_img").length !=0) {var color2=colorSele;var color1=colorBack;
+$(".imaCell_img").css("background","-webkit-radial-gradient(center, ellipse, "+color1+","+color2+")");
+$(".imaCell_img").css("background","-moz-radial-gradient(center,ellipse, "+color1+", "+color2+")");
+$(".imaCell_img").css("background","-ms-radial-gradient(center, ellipse, "+color1+", "+color2+")");
+$(".imaCell_img").css("background","-o-radial-gradient(center, ellipse, "+color1+", "+color2+")");
+$(".imaCell_img").css("background","radial-gradient(ellipse at center, "+color1+", "+color2+")");
+$(".imaCell_img").css("filter","progid:DXImageTransform.Microsoft.gradient(startColorstr='"+color1+"', endColorstr='"+color2+"')");}
+if ($(".txtCell_txt").length !=0) {var color2=colorSele;var color1=colorBack;
+$(".txtCell_txt").css("background","-webkit-radial-gradient(center, ellipse, "+color1+","+color2+")");
+$(".txtCell_txt").css("background","-moz-radial-gradient(center,ellipse, "+color1+", "+color2+")");
+$(".txtCell_txt").css("background","-ms-radial-gradient(center, ellipse, "+color1+", "+color2+")");
+$(".txtCell_txt").css("background","-o-radial-gradient(center, ellipse, "+color1+", "+color2+")");
+$(".txtCell_txt").css("background","radial-gradient(ellipse at center, "+color1+", "+color2+")");
+$(".txtCell_txt").css("filter","progid:DXImageTransform.Microsoft.gradient(startColorstr='"+color1+"', endColorstr='"+color2+"')");}
 $("#ardoraMain").css("font-family",fEnun); $(".txtCell").css("font-family",fActi);
 }
